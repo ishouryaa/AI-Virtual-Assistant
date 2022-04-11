@@ -4,6 +4,7 @@ import datetime
 import wikipedia
 import webbrowser
 import os
+import smtplib
 
 engine = pyttsx3.init('sapi5')
 voices = engine.getProperty('voices')
@@ -27,7 +28,7 @@ def wishMe():
     else:
         speak("Good Evening!")
 
-    speak("I am Dexter, sir your personal virtual assistant! Hope you are well!")
+    speak("Hello Sir! I am Dexter, your personal virtual assistant! Hope you are well!")
 
 def takeCommand():
 
@@ -52,14 +53,13 @@ def sendEmail(to, content):
     server = smtplib.SMTP('smtp.gmail.com', 587)
     server.ehlo()
     server.starttls()
-    server.login('', 'your-crazyboy')
-    server.sendmail('', to, content)
+    server.login('shourya22rockzz@gmail.com', 'iamshouryaa')
+    server.sendmail('shouryaa2005@gmail.com', to, content)
     server.close()
 
 if __name__ == "__main__":
     wishMe()
     while True:
-  # if 1:
         query = takeCommand().lower()
 
         if 'wikipedia' in query:
@@ -76,17 +76,25 @@ if __name__ == "__main__":
         elif 'open google' in query:
             webbrowser.open("google.com")
 
-        elif 'open stack overflow' in query:
-            webbrowser.open("stackoverflow.com")
-
-
-
+        elif 'play music' in query:
+            music_dir = 'C:\\Users\\shour\\OneDrive\\Desktop\\Music'
+            songs = os.listdir(music_dir)
+            print(songs)
+            os.startfile(os.path.join(music_dir, songs[0]))
 
         elif 'the time' in query:
             strTime = datetime.datetime.now().strftime("%H:%M:%S")
-            speak(f"Master, the time is {strTime}")
+            speak(f"Shouryaa, the time is {strTime}")
 
-        elif 'open code' in query:
-            codePath = ""
-            os.startfile(codePath)
+        elif 'message' in query:
+            try:
+                speak("What should I say?")
+                content = takeCommand()
+                to = "shouryaa2005@gmail.com"
+                sendEmail(to, content)
+                speak("Email has been sent!")
+            except Exception as e:
+                print(e)
+                speak("Sorry Shouryaa. I am not able to send this email")
+
 
